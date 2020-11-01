@@ -13,8 +13,14 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->has('search')) {
+            return new CategoryCollection(
+                Category::where('name', 'like', '%'. $request->search . '%')->get()
+            );
+        }
+
         return new CategoryCollection(Category::get());
     }
 
