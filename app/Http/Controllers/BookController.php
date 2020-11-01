@@ -46,7 +46,7 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        //
+        return new BookResource(Book::find($id));
     }
 
     /**
