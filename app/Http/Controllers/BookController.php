@@ -58,7 +58,9 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $book = Book::find($id);
+        $book->update($request->all());
+        return new BookResource($book);
     }
 
     /**
