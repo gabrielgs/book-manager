@@ -14,8 +14,22 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->has('category'))
+        {
+            return new BookCollection(
+                Book::where('category_id', $request->category)->paginate()
+            );
+        }
+
+        if ($request->has('search'))
+        {
+            return new BookCollection(
+                Book::where('name', 'like', '%'. $request->search . '%')->get()
+            );
+        }
+
         return new BookCollection(Book::paginate());
     }
 
