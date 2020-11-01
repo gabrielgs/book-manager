@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Http\Resources\Book as BookResource;
 use App\Http\Resources\BookCollection;
 
 class BookController extends Controller
@@ -26,7 +27,15 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:books,name',
+            'author' => 'required',
+            'status' => 'required',
+            'publication_date' => 'required|date_format:Y-m-d',
+            'category_id' => 'required'
+        ]);
+
+        return new BookResource(Book::create($request->all()));
     }
 
     /**
