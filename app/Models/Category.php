@@ -15,4 +15,8 @@ class Category extends Model
      * @var array
      */
     protected $fillable = ['name', 'description'];
+
+    public function books() {
+        return $this->hasMany('App\Models\Book');
+    }
 }
