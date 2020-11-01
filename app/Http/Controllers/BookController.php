@@ -26,7 +26,7 @@ class BookController extends Controller
         if ($request->has('search'))
         {
             return new BookCollection(
-                Book::where('name', 'like', '%'. $request->search . '%')->get()
+                Book::where('name', 'like', '%'. $request->search . '%')->paginate()
             );
         }
 
