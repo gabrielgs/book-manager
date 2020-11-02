@@ -2,7 +2,7 @@
   <main>
     <MainHeader />
     <MainBooksActions />
-    <DataTable />
+    <DataTable :books="books" />
     <VPagination :pagination="pagination" @paginate="fetchBooks" />
   </main>
 </template>
@@ -19,6 +19,7 @@ export default {
   data() {
     return {
       books: [],
+      booksWithCategory: [],
       pagination: {}
     };
   },
@@ -33,10 +34,30 @@ export default {
   methods: {
     async fetchBooks(page) {
       try {
-        let resBooks = await axios.get(
+        const resBooks = await axios.get(
           `http://localhost:8000/api/books?page=${page}`
         );
-        this.books = resBooks.data.data;
+
+        const promisesBooksCategory = resBooks.data.data.map(async book => {
+          const resCategoryBook = await axios.get(
+            `http://localhost:8000/api/categories/${book.category_id}`
+          );
+
+          const { category_id, ...res } = book;
+          const { name } = resCategoryBook.data;
+
+          return {
+            ...res,
+            category: {
+              id: category_id,
+              name
+            }
+          };
+        });
+
+        const booksWithCategory = await Promise.all(promisesBooksCategory);
+        this.books = booksWithCategory;
+
         this.pagination = resBooks.data.meta;
       } catch (error) {
         console.log(error);
