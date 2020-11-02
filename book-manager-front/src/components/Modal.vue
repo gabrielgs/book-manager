@@ -26,12 +26,6 @@
             />
           </div>
           <div class="mb-4 relative">
-            <!-- <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white"
-              type="text"
-              placeholder="Status"
-              v-model="newBook.status"
-            > -->
             <select
               v-model="newBook.status"
               class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
