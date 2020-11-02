@@ -4,6 +4,11 @@
     <MainBooksActions />
     <DataTable :books="books" />
     <VPagination :pagination="pagination" @paginate="fetchBooks" />
+    <Modal
+      :categories="categories"
+      @get-categories="getCategories"
+      @create-book="createBook"
+    />
   </main>
 </template>
 
@@ -12,6 +17,8 @@ import MainHeader from "@/components/MainHeader";
 import MainBooksActions from "@/components/MainBooksActions";
 import DataTable from "@/components/DataTable";
 import VPagination from "@/components/VPagination";
+import Modal from "@/components/Modal";
+import { mutations } from "../store";
 import axios from "axios";
 
 export default {
@@ -19,7 +26,7 @@ export default {
   data() {
     return {
       books: [],
-      booksWithCategory: [],
+      categories: [],
       pagination: {}
     };
   },
@@ -28,10 +35,13 @@ export default {
     MainHeader,
     MainBooksActions,
     DataTable,
-    VPagination
+    VPagination,
+    Modal
   },
 
   methods: {
+    setShowAutoComplete: mutations.setShowAutoComplete,
+    setShowCreateModal: mutations.setShowCreateModal,
     async fetchBooks(page) {
       try {
         const resBooks = await axios.get(
@@ -59,6 +69,37 @@ export default {
         this.books = booksWithCategory;
 
         this.pagination = resBooks.data.meta;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getCategories(query) {
+      this.setShowAutoComplete(true);
+      query = query.length > 0 ? query : null;
+      try {
+        const resCategories = await axios.get(
+          `http://localhost:8000/api/categories?search=${query}`
+        );
+        // const resCategories = await axios.get(`http://localhost:8000/api/categories?search=""`)
+        this.categories = resCategories.data.data;
+        console.log("Categories", query);
+      } catch (error) {
+        this.setShowCreateModal(false);
+        console.log(error);
+      }
+    },
+
+    async createBook(book) {
+      try {
+        let resCreateBook = await axios.post(
+          "http://localhost:8000/api/books",
+          book
+        );
+        this.setShowCreateModal(false);
+        this.fetchBooks();
+        book.name = "";
+        console.log(resCreateBook);
       } catch (error) {
         console.log(error);
       }
