@@ -84,7 +84,7 @@
         <div class="flex justify-between">
           <button
             class="btn border border-green-300 border-solid hover:border-green-600  rounded px-10 py-2"
-            @click="setShowCreateModal(false)"
+            @click="closeModal"
           >
             Cancel
           </button>
@@ -130,6 +130,7 @@ export default {
       return getters.showCreateModal();
     }
   },
+
   methods: {
     setShowAutoComplete: mutations.setShowAutoComplete,
     setShowCreateModal: mutations.setShowCreateModal,
@@ -141,6 +142,24 @@ export default {
 
     addNewBook() {
       this.$emit("create-book", this.newBook);
+      this.newBook = {
+        name: "",
+        author: "",
+        status: "",
+        publication_date: "",
+        category_id: ""
+      };
+    },
+
+    closeModal() {
+      this.setShowCreateModal(false);
+      this.newBook = {
+        name: "",
+        author: "",
+        status: "",
+        publication_date: "",
+        category_id: ""
+      };
     }
   }
 };
