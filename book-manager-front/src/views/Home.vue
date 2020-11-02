@@ -1,11 +1,19 @@
 <template>
-  <div class="home">
-    <h1 class="text-5xl">Welcome!</h1>
+  <div>
+    <Header />
+    <Main />
   </div>
 </template>
 
 <script>
+import Header from "@/components/Header";
+import Main from "@/components/Main";
+
 export default {
-  name: "Home"
+  name: "Home",
+  components: {
+    Header,
+    Main
+  }
 };
 </script>
