@@ -2,7 +2,11 @@
   <main>
     <MainHeader />
     <MainBooksActions />
-    <DataTable :books="books" @open-modal-edit="openModalEdit" />
+    <DataTable
+      :books="books"
+      @open-modal-edit="openModalEdit"
+      @delete-book="deleteBook"
+    />
     <VPagination :pagination="pagination" @paginate="fetchBooks" />
     <Modal
       :categories="categories"
@@ -207,6 +211,7 @@ export default {
         this.fetchBooks();
         book.name = "";
       } catch (error) {
+        this.setShowCreateModal(false);
         console.log(error);
       }
     },
@@ -240,10 +245,24 @@ export default {
         this.setShowEditModal(false);
         this.fetchBooks();
       } catch (error) {
+        this.setShowEditModal(false);
         console.log(error);
       }
 
       console.log("BOOK TO UPDATE", res);
+    },
+
+    async deleteBook(idBook) {
+      console.log("Book deleted", idBook);
+
+      try {
+        let resDeleteBook = await axios.delete(
+          `http://localhost:8000/api/books/${idBook}`
+        );
+        this.fetchBooks();
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
 

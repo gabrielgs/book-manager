@@ -30,7 +30,10 @@
             >
               Edit
             </button>
-            <button class="bg-red-600 rounded text-white  text-sm px-3 py-1">
+            <button
+              class="bg-red-600 rounded text-white  text-sm px-3 py-1"
+              @click="$emit('delete-book', book.id)"
+            >
               Delete
             </button>
           </td>
