@@ -25,7 +25,8 @@
           </td>
           <td class=" text-center">
             <button
-              class="bg-blue-500 rounded text-white  text-sm px-3 py-1 mr-3"
+              class="border border-blue-400 rounded text-blue-400 text-sm px-3 py-1 mr-3"
+              @click="$emit('open-modal-edit', book)"
             >
               Edit
             </button>
@@ -40,12 +41,17 @@
 </template>
 
 <script>
+import { mutations } from "../store";
 export default {
   name: "DataTable",
   props: {
     books: {
       type: Array
     }
+  },
+
+  methods: {
+    setShowEditModal: mutations.setShowEditModal
   }
 };
 </script>
