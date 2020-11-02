@@ -3,6 +3,7 @@
     <h1 class="text-2xl">Books</h1>
     <button
       class="transition duration-300 ease-in-out button bg-green-500 hover:bg-green-600 rounded inline-flex items-center py-2 px-4 text-white"
+      @click="setShowCreateModal(true)"
     >
       <svg
         class="w-4 h-4 mr-2"
@@ -24,7 +25,12 @@
 </template>
 
 <script>
+import { mutations } from "../store";
 export default {
-  name: "MainHeader"
+  name: "MainHeader",
+
+  methods: {
+    setShowCreateModal: mutations.setShowCreateModal
+  }
 };
 </script>
