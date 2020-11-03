@@ -152,7 +152,7 @@ export default {
   methods: {
     changePage(page) {
       this.pagination.current_page = page;
-      this.$emit("paginate", page);
+      this.$emit("paginate", page, "");
     }
   }
 };
