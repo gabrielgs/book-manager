@@ -50,6 +50,7 @@
             </div>
           </div>
           <div class="mb-4">
+            <label>Publication Date</label>
             <input
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white"
               type="date"
@@ -69,7 +70,7 @@
               class="bg-white border border-gray-200 mt-1 absolute z-10 left-0 right-0"
             >
               <li
-                class="py-2 cursor-pointer hover:bg-gray-200"
+                class="py-2 px-4 cursor-pointer hover:bg-gray-200"
                 @click="chooseCategory(category)"
                 v-for="category in categories"
                 :key="category.id"

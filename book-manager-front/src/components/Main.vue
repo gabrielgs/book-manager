@@ -1,7 +1,12 @@
 <template>
   <main>
     <MainHeader />
-    <MainBooksActions @search-book="searchBook"/>
+    <MainBooksActions
+      :categories="categories"
+      @search-book="searchBook"
+      @get-categories="getCategories"
+      @filter-category="fetchBooks"
+    />
     <DataTable
       :books="books"
       @open-modal-edit="openModalEdit"
@@ -57,6 +62,7 @@
             </div>
           </div>
           <div class="mb-4">
+            <label>Publication Date</label>
             <input
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white"
               type="date"
@@ -157,14 +163,15 @@ export default {
     setShowAutoComplete: mutations.setShowAutoComplete,
     setShowCreateModal: mutations.setShowCreateModal,
     setShowEditModal: mutations.setShowEditModal,
-    async fetchBooks(page, search) {
-      const url = `http://localhost:8000/api/books?page=${page}&search=${search}`
+    async fetchBooks(page, search, category) {
+      let url = `http://localhost:8000/api/books?page=${page}&search=${search}`;
 
-      console.log("Searh", url)
+      if (category) {
+        url = `http://localhost:8000/api/books?category=${category}`;
+      }
+
       try {
-        const resBooks = await axios.get(
-          `http://localhost:8000/api/books?page=${page}&search=${search}`
-        );
+        const resBooks = await axios.get(url);
 
         const promisesBooksCategory = resBooks.data.data.map(async book => {
           const resCategoryBook = await axios.get(
@@ -200,7 +207,6 @@ export default {
           `http://localhost:8000/api/categories?search=${query}`
         );
         this.categories = resCategories.data.data;
-        console.log("Categories", query);
       } catch (error) {
         this.setShowCreateModal(false);
         console.log(error);
@@ -211,7 +217,7 @@ export default {
       try {
         await axios.post("http://localhost:8000/api/books", book);
         this.setShowCreateModal(false);
-        this.fetchBooks();
+        this.fetchBooks(1, "");
         book.name = "";
       } catch (error) {
         this.setShowCreateModal(false);
@@ -246,36 +252,31 @@ export default {
       try {
         await axios.patch(`http://localhost:8000/api/books/${id}`, updatedBook);
         this.setShowEditModal(false);
-        this.fetchBooks();
+        this.fetchBooks(1, "");
       } catch (error) {
         this.setShowEditModal(false);
         console.log(error);
       }
-
-      console.log("BOOK TO UPDATE", res);
     },
 
     async deleteBook(idBook) {
-      console.log("Book deleted", idBook);
-
       try {
         let resDeleteBook = await axios.delete(
           `http://localhost:8000/api/books/${idBook}`
         );
-        this.fetchBooks();
+        this.fetchBooks(1, "");
       } catch (error) {
         console.log(error);
       }
     },
 
-    async searchBook(search) {
-      this.fetchBooks(1, search)
-      console.log("Searching..", search)
+    searchBook(search) {
+      this.fetchBooks(1, search);
     }
   },
 
   mounted() {
-    this.fetchBooks(1, '');
+    this.fetchBooks(1, "");
   }
 };
 </script>
