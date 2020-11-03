@@ -1,12 +1,14 @@
 <template>
   <section class="flex px-6">
     <div class="flex bg-white w-full px-3 py-5">
-      <form class="flex w-2/3 pr-20">
+      <form class="flex w-2/3 pr-20" @submit.prevent="$emit('search-book', search)">
         <div class="relative flex w-full">
           <input
             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white"
             type="text"
             placeholder="Search"
+            v-model="search"
+            @keyup="$emit('search-book', search)"
           />
           <span
             class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
@@ -44,6 +46,11 @@
 </template>
 <script>
 export default {
-  name: "MainBooksActions"
+  name: "MainBooksActions",
+  data() {
+    return {
+      search: ''
+    }
+  }
 };
 </script>

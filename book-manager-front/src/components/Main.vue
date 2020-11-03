@@ -1,7 +1,7 @@
 <template>
   <main>
     <MainHeader />
-    <MainBooksActions />
+    <MainBooksActions @search-book="searchBook"/>
     <DataTable
       :books="books"
       @open-modal-edit="openModalEdit"
@@ -157,10 +157,13 @@ export default {
     setShowAutoComplete: mutations.setShowAutoComplete,
     setShowCreateModal: mutations.setShowCreateModal,
     setShowEditModal: mutations.setShowEditModal,
-    async fetchBooks(page) {
+    async fetchBooks(page, search) {
+      const url = `http://localhost:8000/api/books?page=${page}&search=${search}`
+
+      console.log("Searh", url)
       try {
         const resBooks = await axios.get(
-          `http://localhost:8000/api/books?page=${page}`
+          `http://localhost:8000/api/books?page=${page}&search=${search}`
         );
 
         const promisesBooksCategory = resBooks.data.data.map(async book => {
@@ -263,11 +266,16 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+
+    async searchBook(search) {
+      this.fetchBooks(1, search)
+      console.log("Searching..", search)
     }
   },
 
   mounted() {
-    this.fetchBooks();
+    this.fetchBooks(1, '');
   }
 };
 </script>
