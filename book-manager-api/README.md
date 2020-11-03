@@ -14,7 +14,7 @@ See instructions for installations
 ## Fill the .env file
 - Rename the .env.example file to .env
 - Modify the netx lines with your MySQL information.
- The database library so don't change DB_DATABASE keep it like that.
+ The database that need to create is **library**,  don't change DB_DATABASE keep it like that.
 
 ```
     DB_CONNECTION=mysql
