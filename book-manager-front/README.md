@@ -14,6 +14,9 @@ npm install
 ```
 npm run serve
 ```
+Got to your browser -> [http://localhost:8080](http://localhost:8080)
+
+## Aditional Scripts
 
 ### Compiles and minifies for production
 ```
@@ -36,7 +39,9 @@ yarn install
 ```
 yarn serve
 ```
+Got to your browser -> [http://localhost:8080](http://localhost:8080)
 
+## Aditional Scripts
 ### Compiles and minifies for production
 ```
 yarn build
