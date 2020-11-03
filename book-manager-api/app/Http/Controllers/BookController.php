@@ -19,18 +19,18 @@ class BookController extends Controller
         if ($request->has('category'))
         {
             return new BookCollection(
-                Book::where('category_id', $request->category)->paginate()
+                Book::where('category_id', $request->category)->paginate(7)
             );
         }
 
         if ($request->has('search'))
         {
             return new BookCollection(
-                Book::where('name', 'like', '%'. $request->search . '%')->paginate()
+                Book::where('name', 'like', '%'. $request->search . '%')->paginate(7)
             );
         }
 
-        return new BookCollection(Book::paginate());
+        return new BookCollection(Book::paginate(7));
     }
 
     /**
